@@ -83,6 +83,12 @@ export async function reactDocgen({
           }
         });
 
+        const compoundPattern = /([A-Z]\w*(?:\.\w+)+)\s*=\s*([A-Z]\w*)\s*[;\n]/g;
+        let match;
+        while ((match = compoundPattern.exec(src)) !== null) {
+          s.append(`;${match[2]}.displayName="${match[1]}"`);
+        }
+
         return {
           code: s.toString(),
           map: s.generateMap({ hires: true, source: id }),

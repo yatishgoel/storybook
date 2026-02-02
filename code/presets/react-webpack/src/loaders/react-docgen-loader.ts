@@ -118,6 +118,12 @@ export default async function reactDocgenLoader(
       }
     });
 
+    const compoundPattern = /([A-Z]\w*(?:\.\w+)+)\s*=\s*([A-Z]\w*)\s*[;\n]/g;
+    let match;
+    while ((match = compoundPattern.exec(source)) !== null) {
+      magicString.append(`;${match[2]}.displayName="${match[1]}"`);
+    }
+
     callback(
       null,
       magicString.toString(),
